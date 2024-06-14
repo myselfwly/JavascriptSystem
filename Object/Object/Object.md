@@ -1,0 +1,2 @@
+# Object
+Object 是Javascript 的内置类型，在JavaScript中几乎所有类型的原型链顶端都指向Object
