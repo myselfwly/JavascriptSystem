@@ -19,11 +19,10 @@ console.log(arr1.flat(2), arr1.flat(), arr1)
  * @returns 降维后的数组
  */
 function myFlat(depth) {
-  depth = depth ?? 1
+  depth = typeof depth === 'number' ? depth : 1
   const context = this
   let res = [].concat(context)
   const insertsArray = (context, index, inserts) => {
-    console.log(context, index, inserts)
     const fun = Array.prototype.splice.bind(context, index, 0)
     fun.apply(context, inserts)
   }
@@ -39,15 +38,18 @@ function myFlat(depth) {
         i++
       }
     }
-    callback && callback(count)
-    return array
+    if (callback(count)) {
+      lowerLevel(array, callback)
+    }
   }
-  while (depth > 0) {
-    lowerLevel(res, (count) => {
-      if (count === 0) depth = 0
-    })
-    depth--
-  }
+  lowerLevel(res, (count) => {
+    if (count === 0) {
+      depth = 0
+    } else {
+      depth--
+    }
+    return depth > 0
+  })
   return res
 }
 
